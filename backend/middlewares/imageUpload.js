@@ -1,6 +1,13 @@
 const multer = require('multer');
 const path = require('path');
 const {v4: uuid} = require('uuid');
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
+
+const storage = new aws.S3({
+    secretAccessKey,
+    accessKeyId: 'AKIA4NHENWRGUVXBOYUS'
+})
 
 const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -28,10 +35,13 @@ const imageUpload = multer({
             'image/jpg'
         ]
         if(allowedMimes.includes(file.mimetype)){
-            cb(null, true)
+            cb(null, true);
         }else{
-            cb(new Error('Por favor, envie somente em formato PNG ou JPG.'))
+            cb(new Error('Por favor, envie somente em formato PNG ou JPG.'));
         }
+    },
+    limits: {
+        fileSize: 2 * 1024 * 1024
     }
 })
 
