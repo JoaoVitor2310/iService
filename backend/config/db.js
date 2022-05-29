@@ -2,10 +2,13 @@ const mongoose = require('mongoose');
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
 
-const conn = async() => {
-    
+const conn = async () => {
+
     try {
-        const dbConn = mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.ttq8z.mongodb.net/?retryWrites=true&w=majority`)    
+        const dbConn = mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.ttq8z.mongodb.net/?retryWrites=true&w=majority`, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
         console.log('Contectado ao banco de dados!');
         return dbConn;
     } catch (error) {
