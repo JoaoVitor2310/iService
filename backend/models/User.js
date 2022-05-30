@@ -9,8 +9,7 @@ const userSchema = new Schema({
     bio: String,
     occupation: Array,
     rating: Number,
-    phone: String,
-    WhatsApp: String,
+    cellPhone: String,
 },
 {
     timestamps: true
