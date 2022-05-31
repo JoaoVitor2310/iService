@@ -36,7 +36,7 @@ const storageTypes = ({
 });
 
 const imageUpload = multer({
-    storage: storageTypes['s3'],
+    storage: storageTypes[process.env.STORAGE_TYPE],
     fileFilter(req, file, cb) {
         const allowedMimes = [
             'image/jpeg',
