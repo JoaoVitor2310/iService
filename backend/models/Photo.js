@@ -15,6 +15,20 @@ const photoSchema = new Schema({
 },
 {
     timestamps: true
+});
+
+const aws = require('aws-sdk');
+const s3 = new aws.S3();
+
+photoSchema.pre('remove', function() {
+    if(process.env.STORAGE_TYPE === 's3'){
+        return s3.deleteObject({
+            Bucket: 'iservice1',
+            Key: this.key
+        }).promise();
+    }else{
+    //nada
+    }
 })
 
 const Photo = mongoose.model('Photo', photoSchema);

@@ -2,8 +2,8 @@ const Photo = require('../models/Photo');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 
-const insertPhoto = async(req, res) => {
-    const {title} = req.body;
+const insertPhoto = async (req, res) => {
+    const { title } = req.body;
     const image = req.file.filename;
     const reqUser = req.user;
     // console.log(req.file)
@@ -19,12 +19,36 @@ const insertPhoto = async(req, res) => {
         url: req.file.location
     })
 
-    if(!newPhoto){
-        res.status(422).json({errors: ['Houve um problema, tente novamente mais tarde.']});
+    if (!newPhoto) {
+        res.status(422).json({ errors: ['Houve um problema, tente novamente mais tarde.'] });
         return;
     }
 
     res.status(200).send(newPhoto);
 };
 
-module.exports = {insertPhoto}
+const deletePhoto = async (req, res) => {
+    const { id } = req.params;
+    const reqUser = req.user;
+
+    try {
+        const photo = await Photo.findById(mongoose.Types.ObjectId(id));
+        if (!photo) {
+            res.status(404).json({ errors: ['Foto não encontrada.'] });
+            return;
+        }
+
+        if (!photo.equals.reqUser._id) {
+            res.status(422).json({ errors: ['Essa foto não é sua.'] })
+        }
+
+        await Photo.findByIdAndDelete(photo._id);
+        res.status(200).json({ id: photo._id, message: 'Foto excluída com sucesso!' });
+
+    } catch (error) {
+        res.status(404).json({ errors: ['Foto não encontrada.'] });
+        return;
+    }
+}
+
+module.exports = { insertPhoto, deletePhoto }
