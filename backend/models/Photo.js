@@ -17,15 +17,19 @@ const photoSchema = new Schema({
     timestamps: true
 });
 
-const aws = require('aws-sdk');
-const s3 = new aws.S3();
+const {S3} = require('@aws-sdk/client-s3');
+const s3 = new S3({ region: process.env.AWS_DEFAULT_REGION });
 
 photoSchema.pre('remove', function() {
     if(process.env.STORAGE_TYPE === 's3'){
-        return s3.deleteObject({
+        s3.deleteObject({
             Bucket: 'iservice1',
             Key: this.key
-        }).promise();
+        }, function(){
+            if(error){
+                console.log(error)
+            }
+        });
     }else{
     //nada
     }

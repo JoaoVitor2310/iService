@@ -38,7 +38,7 @@ const deletePhoto = async (req, res) => {
             return;
         }
 
-        if (!photo.equals.reqUser._id) {
+        if (!photo.userId.equals(reqUser._id)) {
             res.status(422).json({ errors: ['Essa foto não é sua.'] })
         }
 
@@ -46,7 +46,7 @@ const deletePhoto = async (req, res) => {
         res.status(200).json({ id: photo._id, message: 'Foto excluída com sucesso!' });
 
     } catch (error) {
-        res.status(404).json({ errors: ['Foto não encontrada.'] });
+        res.status(404).json({ errors: ['Foto não encontradaa.'] });
         return;
     }
 }
