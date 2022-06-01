@@ -5,7 +5,7 @@ const dbPassword = process.env.DB_PASSWORD;
 const conn = async () => {
 
     try {
-        const dbConn = mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.ttq8z.mongodb.net/?retryWrites=true&w=majority`, {
+        const dbConn = await mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.ttq8z.mongodb.net/?retryWrites=true&w=majority`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })

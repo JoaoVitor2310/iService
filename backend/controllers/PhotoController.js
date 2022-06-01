@@ -6,25 +6,32 @@ const insertPhoto = async (req, res) => {
     const { title } = req.body;
     const image = req.file.filename;
     const reqUser = req.user;
-    // console.log(req.file)
-    const user = await User.findById(reqUser._id);
+    console.log(reqUser); // Ta dando null
 
-    const newPhoto = await Photo.create({
-        image,
-        title,
-        userId: user._id,
-        userName: user.name,
-        size: req.file.size,
-        key: req.file.key,
-        url: req.file.location
-    })
+    // try {
+        const user = await User.findById(reqUser._id);
 
-    if (!newPhoto) {
-        res.status(422).json({ errors: ['Houve um problema, tente novamente mais tarde.'] });
-        return;
-    }
+        const newPhoto = await Photo.create({
+            image,
+            title,
+            userId: user._id,
+            userName: user.name,
+            size: req.file.size,
+            key: req.file.key,
+            url: req.file.location
+        })
 
-    res.status(200).send(newPhoto);
+        if (!newPhoto) {
+            res.status(422).json({ errors: ['Houve um problema, tente novamente mais tarde.'] });
+            return;
+        }
+
+        res.status(200).send(newPhoto);
+    // } catch (error) {
+    //     res.status(422).json({ errors: ['Houve um problema, tente novamente mais tardeeee.'] });
+    //     return;
+    // }
+
 };
 
 const deletePhoto = async (req, res) => {
