@@ -6,9 +6,7 @@ const insertPhoto = async (req, res) => {
     const { title } = req.body;
     const image = req.file.filename;
     const reqUser = req.user;
-    // console.log(reqUser);
 
-    // try {
     const user = await User.findById(reqUser._id);
 
     const newPhoto = await Photo.create({
@@ -27,11 +25,6 @@ const insertPhoto = async (req, res) => {
     }
 
     res.status(200).send(newPhoto);
-    // } catch (error) {
-    //     res.status(422).json({ errors: ['Houve um problema, tente novamente mais tardeeee.'] });
-    //     return;
-    // }
-
 };
 
 const deletePhoto = async (req, res) => {
@@ -55,7 +48,6 @@ const deletePhoto = async (req, res) => {
         const s3 = new S3({region: process.env.AWS_DEFAULT_REGION});
 
         Photo.deleteOne(async function() {
-            console.log(`Entrou`);
             if (process.env.STORAGE_TYPE === 's3') {
                 await s3.deleteObject({
                     Bucket: 'iservice1',

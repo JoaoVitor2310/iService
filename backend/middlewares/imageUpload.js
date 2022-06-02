@@ -27,7 +27,7 @@ const storageTypes = ({
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read',
         key: (req, file, cb) => {
-            cb(null, uuid() + path.extname(file.originalname));
+            cb(null, `${pasta}` + uuid() + path.extname(file.originalname));
         },
         metadata: (req, file, cb) => {
             cb(null, { fieldName: file.fieldname });
