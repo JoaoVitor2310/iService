@@ -17,19 +17,6 @@ const photoSchema = new Schema({
     timestamps: true
 });
 
-// const {S3} = require('@aws-sdk/client-s3');
-// const s3 = new S3({ region: process.env.AWS_DEFAULT_REGION });
-
-// photoSchema.pre('remove', async function() {
-//     if(process.env.STORAGE_TYPE === 's3'){
-//         await s3.deleteObject({
-//             Bucket: 'iservice1',
-//             Key: this.key
-//         }).promisse();
-//     }else{
-//         console.log('Não está no modo s3');
-//     }
-// })
 
 const Photo = mongoose.model('Photo', photoSchema);
 module.exports = Photo;
