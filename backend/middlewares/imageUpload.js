@@ -21,13 +21,14 @@ const storageTypes = ({
             cb(null, uuid() + path.extname(file.originalname));
         }
     }),
+    // `${pasta}/` + uuid... coloca as photos nas pastas
     s3: multerS3({
         s3: new S3Client({ region: process.env.AWS_DEFAULT_REGION }),
         bucket: 'iservice1',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read',
         key: (req, file, cb) => {
-            cb(null, `${pasta}` + uuid() + path.extname(file.originalname));
+            cb(null, uuid() + path.extname(file.originalname));
         },
         metadata: (req, file, cb) => {
             cb(null, { fieldName: file.fieldname });
