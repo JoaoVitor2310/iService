@@ -45,9 +45,9 @@ const deletePhoto = async (req, res) => {
         await Photo.findByIdAndDelete(photo._id);
 
         const { S3 } = require('@aws-sdk/client-s3');
-        const s3 = new S3({region: process.env.AWS_DEFAULT_REGION});
+        const s3 = new S3({ region: process.env.AWS_DEFAULT_REGION });
 
-        Photo.deleteOne(async function() {
+        Photo.deleteOne(async function () {
             if (process.env.STORAGE_TYPE === 's3') {
                 await s3.deleteObject({
                     Bucket: 'iservice1',
@@ -72,4 +72,25 @@ const getAllPhotos = async (req, res) => {
     return res.status(200).json(photos);
 }
 
-module.exports = { insertPhoto, deletePhoto, getAllPhotos }
+const getUserPhotos = async (req, res) => {
+    const { id } = req.params;
+    const photos = await Photo.find({ userId: id }).sort([['createdAt', -1]]).exec();
+    if (!photos) {
+        res.status(404).json({ errors: ['O usuário não postou fotos.'] })
+    }
+    return res.status(200).json(photos);
+}
+
+const getPhotoById = async (req, res) => {
+    const { id } = req.params;
+    const photo = await Photo.findById(mongoose.Types.ObjectId(id));
+
+    if (!photo) {
+        res.status(404).json({ errors: ['Foto não encontrada.'] })
+        return;
+    }
+    res.status(200).json(photo);
+
+}
+
+module.exports = { insertPhoto, deletePhoto, getAllPhotos, getUserPhotos, getPhotoById }
