@@ -124,10 +124,18 @@ const getUserById = async (req, res) => {
 
 }
 
+const searchUsers = async(req, res) => {
+    const {q} = req.query;
+    const users = await User.find({name: new RegExp(q, 'i')}).exec();
+    
+    res.status(200).json(users);
+}
+
 module.exports = {
     register,
     login,
     getCurrentUser,
     update,
-    getUserById
+    getUserById,
+    searchUsers
 }
