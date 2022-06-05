@@ -9,6 +9,7 @@ const photoSchema = new Schema({
     userId: mongoose.ObjectId,
     userName: String,
 
+    description: String,
     size: Number,
     key: String,
     url: String,

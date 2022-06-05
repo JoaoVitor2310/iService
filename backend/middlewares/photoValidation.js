@@ -16,28 +16,41 @@ const photoInsertValidation = () => {
                     throw new Error('A imagem é obrigatória.')
                 }
                 return true;
-            })
+            }),
+    //     body('description')
+    //         .optional()
+    //         .isString()
+    //         .withMessage('O título é obrigatório.')
+    //         .isLength({ min: 3 })
+    //         .withMessage('O título precisa ter no mínimo 3 caracteres.'),
     ]
 }
 
 const photoUpdateValidation = () => {
     return [
         body('title')
+            .optional()
             .isString()
             .withMessage('O título é obrigatório.')
             .isLength({ min: 3 })
             .withMessage('O título precisa ter no mínimo 3 caracteres.'),
+        // body('description')
+        //     .optional()
+        //     .isString()
+        //     .withMessage('O título é obrigatório.')
+        //     .isLength({ min: 3 })
+        //     .withMessage('O título precisa ter no mínimo 3 caracteres.'),
     ]
 }
 
 const commentValidation = () => {
     return [
         body('comment')
-        .isString()
-        .withMessage('O comentário é obrigatório.')
-        .not()
-        .equals('')
-        .withMessage('O comentário é obrigatório.')
+            .isString()
+            .withMessage('O comentário é obrigatório.')
+            .not()
+            .equals('')
+            .withMessage('O comentário é obrigatório.')
     ]
 }
 
