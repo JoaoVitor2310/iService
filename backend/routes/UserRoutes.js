@@ -17,6 +17,6 @@ router.post('/login', loginValidation(), validate, login);
 router.get('/profile', authGuard, getCurrentUser);
 router.put('/', authGuard, userUpdateValidation(), validate, imageUpload.single('profileImage'), update)
 router.get('/search', authGuard, searchUsers);
-router.get('/:id', getUserById);
+router.get('/:id', getUserById);aaaa
 
 module.exports = router;
