@@ -7,6 +7,7 @@ const userSchema = new Schema({
     password: String,
     profileImage: String,
     bio: String,
+    
     occupation: Array,
     rating: Number,
     cellPhone: String,

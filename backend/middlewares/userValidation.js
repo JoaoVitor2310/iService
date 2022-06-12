@@ -7,6 +7,12 @@ const userCreateValidation = () => {
             .withMessage('O nome é obrigatório.')
             .isLength({ min: 3 })
             .withMessage('O nome precisa ter no mínimo 3 caracteres.'),
+        body('occupation')
+            .not()
+            .equals('')
+            .withMessage('A função é obrigatória.')
+            .isString()
+            .withMessage('A função é obrigatória.'),
         body('email')
             .isString()
             .withMessage('O email é obrigatório.')

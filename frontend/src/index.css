@@ -31,7 +31,7 @@ label span{
   color: #AAA;
   font-size: .7em;
 }
-input{
+input, select{
   background-color: #3B3B3B;
   color: #AAA;
   border: 1px solid #555;
@@ -39,6 +39,9 @@ input{
   padding: 10px 8px;
   outline: none;
   margin-bottom: .6em;
+}
+select{
+  padding: 10px 4px;
 }
 input::placeholder{
   color: #AAA;

@@ -13,13 +13,14 @@ const generateToken = (id) => {
 
 // Register and sign in
 const register = async(req, res) => {
-    const {name, email, password} = req.body;
+    const {name, occupation, email, password} = req.body;
+    console.log(req.body);
 
     //Check if user exists
     const user = await User.findOne({email});
     if(user){
         res.status(409).json({errors: ['Email já cadastrado, utilize outro.']});
-        return
+        return;
     }
     //Create password hash
     const salt = await bcrypt.genSalt();
@@ -27,6 +28,7 @@ const register = async(req, res) => {
     //Create user
     const newUser = await User.create({
         name,
+        occupation,
         email,
         password: passwordHash
     })
