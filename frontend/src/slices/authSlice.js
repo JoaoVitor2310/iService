@@ -20,6 +20,12 @@ export const register = createAsyncThunk( // Async function that will search an 
     }
 )
 
+export const logout = createAsyncThunk(
+    'auth/logout', async () => {
+        await authService.logout();
+    }
+)
+
 export const authSlice = createSlice({
     name: 'auth', // Name that will be called at the store.js with useSelector
     initialState,
@@ -44,6 +50,12 @@ export const authSlice = createSlice({
         .addCase(register.rejected, (state, action) => { // If the register API is rejected
             state.loading = false;
             state.error = action.payload; //Error will come from action, and will show for user
+            state.user = null;
+        })
+        .addCase(logout.fulfilled, (state, action) => { // If the register API is fulfilled
+            state.loading = false;
+            state.success = true;
+            state.error = null;
             state.user = null;
         })
     }
