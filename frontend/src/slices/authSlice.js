@@ -26,6 +26,16 @@ export const logout = createAsyncThunk(
     }
 )
 
+export const login = createAsyncThunk( // Async function that will search an user and return him or an error
+    'auth/login', async (user, thunkAPI) => {
+        const data = await authService.login(user); // Sends the user for authService login use fetch
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0]); // Returns the first errors to shows to the user
+        }
+        return data;
+    }
+)
+
 export const authSlice = createSlice({
     name: 'auth', // Name that will be called at the store.js with useSelector
     initialState,
@@ -56,6 +66,21 @@ export const authSlice = createSlice({
             state.loading = false;
             state.success = true;
             state.error = null;
+            state.user = null;
+        })
+        .addCase(login.pending, state => { // If the login API is pending
+            state.loading = true;
+            state.error = false;
+        })
+        .addCase(login.fulfilled, (state, action) => {
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+            state.user = action.payload;
+        })
+        .addCase(login.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
             state.user = null;
         })
     }
