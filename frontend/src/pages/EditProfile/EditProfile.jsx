@@ -1,7 +1,7 @@
 import './EditProfile.css'
 import React from 'react'
 
-import { upload } from '../../utils/config'
+// import { upload } from '../../utils/config'
 
 //Hooks
 import { useEffect, useState } from 'react'
@@ -30,7 +30,6 @@ const EditProfile = () => {
     useEffect(() => {
         dispatch(profile());
     }, [dispatch]);
-
     //Fill form with user data
     useEffect(() => {
         if (user) {
@@ -39,20 +38,54 @@ const EditProfile = () => {
             setBio(user.bio);
             setOccupation(user.occupation);
         }
+        console.log(user);
     }, [user]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        const userData = {
+            name //Name is required
+        }
+
+        if (profileImage) {
+            userData.profileImage = profileImage;
+        }
+        if (bio) {
+            userData.bio = bio;
+        }
+        if (password) {
+            userData.password = password;
+        }
+
+        const formData = new FormData();
+        Object.keys(userData).forEach((key) => formData.append(key, userData[key]))
+
+        console.log(formData);
+        await dispatch(updateProfile(formData));
+
+        setTimeout(() => {
+            dispatch(resetMessage())
+        }, 4000)
     }
 
     const handleFile = (e) => {
-        e.preventDefault();
+        const image = e.target.files[0];
+        setPreviewImage(image);
+        setProfileImage(image);
     }
 
     return (
         <div id='edit-profile'>
             <h2>Edite seus dados</h2>
             <p className="subtitle">Adicione uma imagem de perfil e conte mais sobre você.</p>
+            {(user.profileImage || previewImage) && ( //If user has a profileImage or are changing his profile image
+                <img className='profile-image' src={
+                    previewImage //If the user is trying to change his profileImage
+                        ? URL.createObjectURL(previewImage) //Creates a temporary object with image preview
+                        : user.profileImage //If not, shows the profileImage
+                }
+                    alt={user.name} />
+            )}
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder='Nome' onChange={e => setName(e.target.value)} value={name || ''} />
                 <input type="email" placeholder='Email' disabled value={email || ''} />
@@ -70,29 +103,29 @@ const EditProfile = () => {
                 </label>
                 <label>
                     <span>Adicionar função:</span>
-                {/* OBS: Select improvisado, iremos melhorar depois via api */}
-                <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setOccupation(e.target.value)}>
-                    <option value="DEFAULT" disabled>Adicionar função:</option>
-                    <option value="user" >Usuário</option>
-                    <option value="bricklayer">Pedreiro</option>
-                    <option value="electrician">Eletricista</option>
-                    <option value="painter">Pintor</option>
-                    <option value="poolCleaner">Piscineiro</option>
-                    <option value="gardener">Jardineiro</option>
-                    <option value="trainer">Adestrador</option>
-                </select>
-                {/* OBS: Select improvisado, iremos melhorar depois via api */}
+                    {/* OBS: Select improvisado, iremos melhorar depois via api */}
+                    {/* <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setOccupation(e.target.value)}>
+                        <option value="DEFAULT" disabled>Adicionar função:</option>
+                        <option value="user" >Usuário</option>
+                        <option value="bricklayer">Pedreiro</option>
+                        <option value="electrician">Eletricista</option>
+                        <option value="painter">Pintor</option>
+                        <option value="poolCleaner">Piscineiro</option>
+                        <option value="gardener">Jardineiro</option>
+                        <option value="trainer">Adestrador</option>
+                    </select> */}
+                    {/* OBS: Select improvisado, iremos melhorar depois via api */}
                 </label>
                 <label>
                     <span>Remover função:</span>
-                {/* OBS: Select improvisado, iremos melhorar depois via api */}
-                <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setOccupation(e.target.value)}>
-                    <option value="DEFAULT" disabled>Remover função:</option>
-                    {/* {user.occupation && user.occupation.map( => (
+                    {/* OBS: Select improvisado, iremos melhorar depois via api */}
+                    {/* <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setOccupation(e.target.value)}> */}
+                        {/* <option value="DEFAULT" disabled>Remover função:</option> */}
+                        {/* {user.occupation && user.occupation.map( => (
                         <option value="trainer">Adestrador</option>
                     ))} */}
-                </select>
-                {/* OBS: Select improvisado, iremos melhorar depois via api */}
+                    {/* </select> */}
+                    {/* OBS: Select improvisado, iremos melhorar depois via api */}
                 </label>
                 <LoadingInput loading={loading} value='Atualizar' />
                 {error && (<Message msg={error} type='error' />)}

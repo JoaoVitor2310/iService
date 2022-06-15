@@ -2,7 +2,10 @@ const Photo = require('../models/Photo');
 const User = require('../models/User');
 const mongoose = require('mongoose');
 
-const insertPhoto = async(req, res) => {
+const { S3 } = require('@aws-sdk/client-s3');
+const s3 = new S3({ region: process.env.AWS_DEFAULT_REGION });
+
+const insertPhoto = async (req, res) => {
     const { title, description } = req.body;
     const image = req.file.filename;
     const reqUser = req.user;
@@ -28,7 +31,7 @@ const insertPhoto = async(req, res) => {
     res.status(200).send(newPhoto);
 };
 
-const deletePhoto = async(req, res) => {
+const deletePhoto = async (req, res) => {
     const { id } = req.params;
     const reqUser = req.user;
 
@@ -44,9 +47,6 @@ const deletePhoto = async(req, res) => {
         }
 
         await Photo.findByIdAndDelete(photo._id);
-
-        const { S3 } = require('@aws-sdk/client-s3');
-        const s3 = new S3({ region: process.env.AWS_DEFAULT_REGION });
 
         Photo.deleteOne(async function () {
             if (process.env.STORAGE_TYPE === 's3') {
@@ -68,12 +68,12 @@ const deletePhoto = async(req, res) => {
     }
 }
 
-const getAllPhotos = async(req, res) => {
+const getAllPhotos = async (req, res) => {
     const photos = await Photo.find({}).sort([['createdAt', -1]]).exec();
     res.status(200).json(photos);
 }
 
-const getUserPhotos = async(req, res) => {
+const getUserPhotos = async (req, res) => {
     const { id } = req.params;
     const photos = await Photo.find({ userId: id }).sort([['createdAt', -1]]).exec();
     if (!photos) {
@@ -83,7 +83,7 @@ const getUserPhotos = async(req, res) => {
     res.status(200).json(photos);
 }
 
-const getPhotoById = async(req, res) => {
+const getPhotoById = async (req, res) => {
     const { id } = req.params;
     const photo = await Photo.findById(mongoose.Types.ObjectId(id));
 
@@ -94,7 +94,7 @@ const getPhotoById = async(req, res) => {
     res.status(200).json(photo);
 }
 
-const updatePhoto = async(req, res) => {
+const updatePhoto = async (req, res) => {
     const { id } = req.params;
     const { title, description } = req.body;
 
@@ -149,8 +149,8 @@ const commentPhoto = async (req, res) => {
 
 }
 
-const likePhoto = async(req,res) => {
-    const {id} = req.params;
+const likePhoto = async (req, res) => {
+    const { id } = req.params;
     const reqUser = req.user;
 
     const photo = await Photo.findById(id);
@@ -164,7 +164,7 @@ const likePhoto = async(req,res) => {
     }
     photo.likes.push(reqUser._id);
     await photo.save();
-    res.status(200).json({photoId: id, userId: reqUser._id, message: 'Foto curtida com sucesso!'});
+    res.status(200).json({ photoId: id, userId: reqUser._id, message: 'Foto curtida com sucesso!' });
 }
 
 module.exports = { insertPhoto, deletePhoto, getAllPhotos, getUserPhotos, getPhotoById, updatePhoto, likePhoto, commentPhoto }
