@@ -42,6 +42,7 @@ const Register = () => {
       <p className='subtitle'>Faça o seu cadastro!</p>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder='Nome' onChange={e => setName(e.target.value)} value={name || ''}/>
+        {/* OBS: Select improvisado, iremos melhorar depois via api */}
         <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setOccupation(e.target.value)}>
           <option value="DEFAULT" disabled>Função principal:</option>
           <option value="user" >Usuário</option>
@@ -52,6 +53,7 @@ const Register = () => {
           <option value="gardener">Jardineiro</option>
           <option value="trainer">Adestrador</option>
         </select>
+        {/* OBS: Select improvisado, iremos melhorar depois via api */}
         <input type="email" placeholder='Email' onChange={e => setEmail(e.target.value)} value={email || ''}/>
         <input type="password" placeholder='Senha' onChange={e => setPassword(e.target.value)} value={password || ''}/>
         <input type="password" placeholder='Confirme a senha' onChange={e => setConfirmPassword(e.target.value)} value={confirmPassword || ''}/>
