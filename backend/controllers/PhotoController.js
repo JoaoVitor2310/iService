@@ -47,6 +47,7 @@ const deletePhoto = async (req, res) => {
         }
 
         await Photo.findByIdAndDelete(photo._id);
+        console.log(photo.key);
 
         Photo.deleteOne(async function () {
             if (process.env.STORAGE_TYPE === 's3') {

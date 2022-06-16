@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
 const mongoose = require('mongoose');
 
+const { S3 } = require('@aws-sdk/client-s3');
+const s3 = new S3({ region: process.env.AWS_DEFAULT_REGION });
+
 //Generate user token
 const generateToken = (id) => {
     return jwt.sign({id}, jwtSecret, {
@@ -75,13 +78,22 @@ const getCurrentUser = async(req, res) => {
 const update  = async(req, res) => {
     const { name, password, bio } = req.body;
     let profileImage = null;
+    const reqUser = req.user;
 
     if (req.file) {
         profileImage = req.file.location;
         // const {originalname, size, key, url} = req.file;
-        console.log(req.file);
+        // console.log(reqUser.profileImage);
+        const previousKey = reqUser.profileImage.split('.com/')[1];
+        // console.log(keyzada);
+        if(reqUser.profileImage){
+            await s3.deleteObject({ //Deletes the previous profile image on amazon s3
+                Bucket: 'iservice1',
+                Key: previousKey
+            });
+        }
     }
-    const reqUser = req.user;
+    // console.log(reqUser.profileImage); //Foto antes de ser alterada
 
     const user = await User.findById(mongoose.Types.ObjectId(reqUser._id)).select('-password');
 
