@@ -7,6 +7,7 @@ import { BsFillEyeFill, BsPencilFill, BsXLg } from 'react-icons/bs'
 import NoPhotos from '../../components/NoPhotos';
 import LoadingInput from '../../components/LoadingInput';
 import LoadingPage from '../../components/LoadingPage';
+import UserOccupation from '../../components/UserOccupation';
 
 //Hooks
 import { useState, useEffect, useRef } from 'react';
@@ -14,7 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 
 //Redux
-import { getUserDetails } from '../../slices/userSlice';
+import { getUserDetails, followUser } from '../../slices/userSlice';
 import { publishPhoto, resetMessage, getUserPhotos, deletePhoto, updatePhoto } from '../../slices/photoSlice';
 
 const Profile = () => {
@@ -104,32 +105,32 @@ const Profile = () => {
     hideOrShowForms();
   }
 
-  // const handleFollow = () => { // Segue o usuário
-  //   dispatch(followUser(id));
-  // }
+  const handleFollow = () => { // Segue o usuário
+    dispatch(followUser(id));
+  }
 
   return (
     <div id='profile'>
       <LoadingPage loading={loadingPhoto} />
       <div className='profile-header'>
-
         {user.profileImage && (
           <img src={user.profileImage} alt={user.name} />
         )}
         <div className="profile-description">
           <h2>{user.name}</h2>
           <p>{user.bio}</p>
-          {/* {user.followers && (
+          <UserOccupation user={user}/>
+          {user.followers && (
             <>
             <p>Seguidores: {user.followers.length}</p>
-            <p>Seguindo: {user.following.length}</p>
+            {/* <p>Seguindo: {user.following.length}</p> */}
             </>
             )}
             {id !== userAuth._id && (
               <>
               <button className='follow' onClick={handleFollow}>{user.followers?.includes(userAuth._id) ? 'Seguindo' : 'Seguir'}</button>
               </>
-            )} */}
+            )}
         </div>
       </div>
       {id === userAuth._id && (

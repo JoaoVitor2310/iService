@@ -3,6 +3,7 @@ import userService from "../services/userService";
 
 const initialState = {
     user: {},
+    users: [],
     error: false,
     success: false,
     loading: false,
@@ -31,6 +32,28 @@ export const updateProfile = createAsyncThunk(
 export const getUserDetails = createAsyncThunk(
     'user/get', async(id, thunkAPI) => {
         const data = await userService.getUserDetails(id);
+        return data;
+    }
+)
+
+export const followUser = createAsyncThunk(
+    'user/follow',
+    async (id, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+        const data = await userService.followUser(id, token);
+
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
+        return data;
+    }
+)
+
+export const searchUsers = createAsyncThunk(
+    'user/search',
+    async(query, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+        const data = await userService.searchUsers(query, token);
         return data;
     }
 )
@@ -73,6 +96,33 @@ export const userSlice = createSlice({
             state.success = true;
             state.error = null;
             state.user = action.payload; //User will come from action
+        }).addCase(followUser.pending, (state) => { // Caso o fetch do followUser estiver pendente
+            state.loading = true;
+            state.error = false;
+        }).addCase(followUser.fulfilled, (state, action) => { // Caso o fetch do followUser estiver sido completado, atualiza o usuário
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+            state.message = action.payload.message;
+            state.user = action.payload.user;
+            
+            if(!state.user.followers.includes(action.payload.userFollowing._id)){
+                state.user.followers.push(action.payload.userFollowing._id);
+            }else{
+                state.user.followers = state.user.followers.filter(follower => {return follower !== action.payload.userFollowing._id});
+            }
+        }).addCase(followUser.rejected, (state, action) => { // Caso o fetch do followUser tiver sido rejeitado.
+            state.loading = false;
+            state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
+        }).addCase(searchUsers.pending, (state) => { // Caso o fetch do searchUsers estiver pendente
+            state.loading = true;
+            state.error = false;
+        }).addCase(searchUsers.fulfilled, (state, action) => { // Caso o fetch do searchUsers estiver sido completado, atualiza o usuário
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+            state.users = action.payload;
+            console.log(state.users);
         })
     }
 })

@@ -38,7 +38,6 @@ const EditProfile = () => {
             setBio(user.bio);
             setOccupation(user.occupation);
         }
-        console.log(user);
     }, [user]);
 
     const handleSubmit = async (e) => {
@@ -60,7 +59,6 @@ const EditProfile = () => {
         const formData = new FormData();
         Object.keys(userData).forEach((key) => formData.append(key, userData[key]))
 
-        console.log(formData);
         await dispatch(updateProfile(formData));
 
         setTimeout(() => {

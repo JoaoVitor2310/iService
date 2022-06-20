@@ -1,0 +1,15 @@
+#overall{
+    display: flex;
+    align-items: center;
+    background-color: rgb(53, 53, 53);
+    margin-bottom: 20px;
+}
+.photo{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.search-photo{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}

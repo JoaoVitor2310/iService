@@ -7,6 +7,8 @@ const userSchema = new Schema({
     password: String,
     profileImage: String,
     bio: String,
+    following: Array,
+    followers: Array,
     
     occupation: Array,
     rating: Number,

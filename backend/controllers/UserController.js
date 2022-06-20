@@ -82,18 +82,14 @@ const update  = async(req, res) => {
 
     if (req.file) {
         profileImage = req.file.location;
-        // const {originalname, size, key, url} = req.file;
-        // console.log(reqUser.profileImage);
-        const previousKey = reqUser.profileImage.split('.com/')[1];
-        // console.log(keyzada);
         if(reqUser.profileImage){
+            const previousKey = reqUser.profileImage.split('.com/')[1];
             await s3.deleteObject({ //Deletes the previous profile image on amazon s3
                 Bucket: 'iservice1',
                 Key: previousKey
             });
         }
     }
-    // console.log(reqUser.profileImage); //Foto antes de ser alterada
 
     const user = await User.findById(mongoose.Types.ObjectId(reqUser._id)).select('-password');
 
@@ -145,11 +141,39 @@ const searchUsers = async(req, res) => {
     res.status(200).json(users);
 }
 
+const followUser = async (req, res) => {
+    const { id } = req.params; // User to follow
+    const reqUser = req.user; // Actual user
+    
+    try {
+        const user = await User.findById(id)
+        const userFollowing = await User.findById(reqUser._id);
+
+        if(user.followers.includes(reqUser._id)){
+            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, {$pull: {followers: reqUser._id} }, { upsert: true });
+            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$pull: {following: id} }, { upsert: true });
+
+            res.status(200).json({user, userFollowing, message: ['Deixou de seguir.']});
+            return;
+        }
+
+        await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, {$push: {followers: reqUser._id} }, { upsert: true });
+        await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$push: {following: id} }, { upsert: true });
+        res.status(200).json({user, userFollowing, message: ['Seguindo!']});
+        
+    } catch (error) {  
+        console.log(error);
+        res.status(404).json({ errors: ['Usuário não encontrado.'] });
+    }
+    return;
+}
+
 module.exports = {
     register,
     login,
     getCurrentUser,
     update,
     getUserById,
-    searchUsers
+    searchUsers,
+    followUser,
 }

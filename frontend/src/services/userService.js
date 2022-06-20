@@ -34,10 +34,34 @@ const getUserDetails = async(id) => {
     }
 }
 
+const followUser = async(id, token) => {
+    const config = requestConfig('PUT', null, token);
+
+    try {
+        const res = fetch(api + '/users/follow/' + id, config).then(res => res.json()).catch(err => err);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const searchUsers = async(query, token) => {
+    const config = requestConfig('GET', null, token);
+
+    try {
+        const res = await fetch(api + '/users/search?q=' + query, config).then(res => res.json()).catch(err => err);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const userService = {
     profile,
     updateProfile,
-    getUserDetails
+    getUserDetails,
+    followUser,
+    searchUsers,
 }
 
 export default userService;
