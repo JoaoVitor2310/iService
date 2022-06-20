@@ -58,6 +58,41 @@ export const updatePhoto = createAsyncThunk(
     }
 )
 
+export const getPhoto = createAsyncThunk(
+    'user/getphoto',
+    async (id, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+        const data = await photoService.getPhoto(id, token);
+        return data;
+    }
+)
+
+export const like = createAsyncThunk(
+    'photo/like',
+    async (id, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+        const data = await photoService.like(id, token);
+
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
+        return data;
+    }
+)
+
+export const comment = createAsyncThunk(
+    'photo/comment',
+    async(commentData, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+        const data = await photoService.comment({comment: commentData.comment}, commentData.id, token);
+
+        if (data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
+        return data;
+    }
+)
+
 export const photoSlice = createSlice({
     name: 'photo',
     initialState,
@@ -122,6 +157,47 @@ export const photoSlice = createSlice({
             state.loading = false;
             state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
             state.photo = {}; //Msm coisa de null, ta assim pra n dar erro
+        }).addCase(getPhoto.pending, (state) => { // Caso o fetch do getPhoto estiver pendente
+            state.loading = true;
+            state.error = false;
+        }).addCase(getPhoto.fulfilled, (state, action) => { // Caso o fetch do getPhoto estiver sido completado, atualiza o usuário
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+            state.photo = action.payload;
+        }).addCase(like.fulfilled, (state, action) => { // Caso o fetch do like estiver sido completado, atualiza o usuário
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+
+            if (state.photo.likes) {
+                state.photo.likes.push(action.payload.userId);
+            }
+
+            state.photos.map(photo => { // Atualiza a foto no frontend, pra não ter que fazer uma nova requisição  
+                if (photo._id === action.payload.photoId) {
+                    return photo.likes.push(action.payload.userId);
+                }
+                return photo;
+            });
+
+            state.message = action.payload.message;
+        }).addCase(like.rejected, (state, action) => { // Caso o fetch do like tiver sido rejeitado.
+            state.loading = false;
+            state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
+        }).addCase(comment.pending, (state) => { // Caso o fetch do comment estiver pendente
+            state.loading = true;
+            state.error = false;
+        })
+        .addCase(comment.fulfilled, (state, action) => { // Caso o fetch do comment estiver sido completado, atualiza o usuário
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+            state.photo.comments.push(action.payload.comment);
+            state.message = action.payload.message;
+        }).addCase(comment.rejected, (state, action) => { // Caso o fetch do comment tiver sido rejeitado.
+            state.loading = false;
+            state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
         })
     }
 })
