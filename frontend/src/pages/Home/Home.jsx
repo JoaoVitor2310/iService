@@ -30,7 +30,7 @@ const Home = () => {
        <LoadingPage loading={loading} />
        {photos && photos.map(photo => (
                 <div key={photo._id}>
-                    {userData.following.includes(photo.userId) && (
+                    {userData.following?.includes(photo.userId) && (
                         <CompletedPhoto photo={photo} user={user} button={true} key={photo._id} />
                     )}
                 </div>

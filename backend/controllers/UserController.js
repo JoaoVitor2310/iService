@@ -76,7 +76,7 @@ const getCurrentUser = async(req, res) => {
 }
 
 const update  = async(req, res) => {
-    const { name, cellPhone, password, bio } = req.body;
+    const { name, cellPhone, password, bio, addOccupation, removeOccupation } = req.body;
     let profileImage = null;
     const reqUser = req.user;
 
@@ -115,6 +115,14 @@ const update  = async(req, res) => {
 
     if (cellPhone) {
         user.cellPhone = cellPhone;
+    }
+
+    if (addOccupation) {
+        user.occupation.push(addOccupation);
+    }
+
+    if (removeOccupation) {
+        await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$pull: {occupation: removeOccupation}});
     }
 
     await user.save();

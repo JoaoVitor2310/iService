@@ -3,6 +3,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import userReducer from './slices/userSlice';
 import photoReducer from './slices/photoSlice';
+import occupationReducer from './slices/occupationSlice';
 
 
 export const store = configureStore({
@@ -10,5 +11,6 @@ export const store = configureStore({
         auth: authReducer,
         user: userReducer,
         photo: photoReducer,
+        occupation: occupationReducer,
     }
 });

@@ -1,8 +1,6 @@
 import './EditProfile.css'
 import React from 'react'
 
-// import { upload } from '../../utils/config'
-
 //Hooks
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,6 +11,7 @@ import { profile, resetMessage, updateProfile } from '../../slices/userSlice';
 //Components
 import Message from '../../components/Message';
 import LoadingInput from '../../components/LoadingInput'
+import OccupationSelect from '../../components/OccupationSelect';
 
 const EditProfile = () => {
     const [name, setName] = useState('');
@@ -22,7 +21,8 @@ const EditProfile = () => {
     const [profileImage, setProfileImage] = useState('');
     const [bio, setBio] = useState('');
     const [previewImage, setPreviewImage] = useState('');
-    // const [occupation, setOccupation] = useState('');
+    const [addOccupation, setAddOccupation] = useState('');
+    const [removeOccupation, setRemoveOccupation] = useState('');
 
     const dispatch = useDispatch();
     const { user, loading, error, message } = useSelector(state => state.user);
@@ -31,7 +31,7 @@ const EditProfile = () => {
     useEffect(() => {
         dispatch(profile());
     }, [dispatch]);
-    
+
     //Fill form with user data
     useEffect(() => {
         if (user) {
@@ -39,7 +39,6 @@ const EditProfile = () => {
             setEmail(user.email);
             setCellPhone(user.cellPhone);
             setBio(user.bio);
-            // setOccupation(user.occupation);
         }
     }, [user]);
 
@@ -60,6 +59,14 @@ const EditProfile = () => {
         }
         if (password) {
             userData.password = password;
+        }
+
+        if (addOccupation) {
+            userData.addOccupation = addOccupation;
+        }
+
+        if (removeOccupation) {
+            userData.removeOccupation = removeOccupation;
         }
 
         const formData = new FormData();
@@ -93,7 +100,7 @@ const EditProfile = () => {
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder='Nome' onChange={e => setName(e.target.value)} value={name || ''} />
                 <input type="email" placeholder='Email' disabled value={email || ''} />
-                <input type="number" maxLength='11' minLength='10' placeholder='Celular' onChange={e => setCellPhone(e.target.value)} value={cellPhone || ''}/>
+                <input type="number" maxLength='11' minLength='10' placeholder='Celular' onChange={e => setCellPhone(e.target.value)} value={cellPhone || ''} />
                 <label>
                     <span>Imagem de Perfil</span>
                     <input type="file" onChange={handleFile} />
@@ -108,29 +115,15 @@ const EditProfile = () => {
                 </label>
                 <label>
                     <span>Adicionar função:</span>
-                    {/* OBS: Select improvisado, iremos melhorar depois via api */}
-                    {/* <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setOccupation(e.target.value)}>
-                        <option value="DEFAULT" disabled>Adicionar função:</option>
-                        <option value="user" >Usuário</option>
-                        <option value="bricklayer">Pedreiro</option>
-                        <option value="electrician">Eletricista</option>
-                        <option value="painter">Pintor</option>
-                        <option value="poolCleaner">Piscineiro</option>
-                        <option value="gardener">Jardineiro</option>
-                        <option value="trainer">Adestrador</option>
-                    </select> */}
-                    {/* OBS: Select improvisado, iremos melhorar depois via api */}
+                    <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setAddOccupation(e.target.value)}>
+                        <OccupationSelect user={user} type='add' />
+                    </select>
                 </label>
                 <label>
                     <span>Remover função:</span>
-                    {/* OBS: Select improvisado, iremos melhorar depois via api */}
-                    {/* <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setOccupation(e.target.value)}> */}
-                        {/* <option value="DEFAULT" disabled>Remover função:</option> */}
-                        {/* {user.occupation && user.occupation.map( => (
-                        <option value="trainer">Adestrador</option>
-                    ))} */}
-                    {/* </select> */}
-                    {/* OBS: Select improvisado, iremos melhorar depois via api */}
+                    <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setRemoveOccupation(e.target.value)}>
+                        <OccupationSelect user={user} type='remove' />
+                    </select>
                 </label>
                 <LoadingInput loading={loading} value='Atualizar' />
                 {error && (<Message msg={error} type='error' />)}
