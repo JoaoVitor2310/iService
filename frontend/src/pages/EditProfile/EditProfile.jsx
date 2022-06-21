@@ -17,11 +17,12 @@ import LoadingInput from '../../components/LoadingInput'
 const EditProfile = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [cellPhone, setCellPhone] = useState('');
     const [password, setPassword] = useState('');
     const [profileImage, setProfileImage] = useState('');
     const [bio, setBio] = useState('');
     const [previewImage, setPreviewImage] = useState('');
-    const [occupation, setOccupation] = useState('');
+    // const [occupation, setOccupation] = useState('');
 
     const dispatch = useDispatch();
     const { user, loading, error, message } = useSelector(state => state.user);
@@ -30,13 +31,15 @@ const EditProfile = () => {
     useEffect(() => {
         dispatch(profile());
     }, [dispatch]);
+    
     //Fill form with user data
     useEffect(() => {
         if (user) {
             setName(user.name);
             setEmail(user.email);
+            setCellPhone(user.cellPhone);
             setBio(user.bio);
-            setOccupation(user.occupation);
+            // setOccupation(user.occupation);
         }
     }, [user]);
 
@@ -51,6 +54,9 @@ const EditProfile = () => {
         }
         if (bio) {
             userData.bio = bio;
+        }
+        if (cellPhone) {
+            userData.cellPhone = cellPhone;
         }
         if (password) {
             userData.password = password;
@@ -87,6 +93,7 @@ const EditProfile = () => {
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder='Nome' onChange={e => setName(e.target.value)} value={name || ''} />
                 <input type="email" placeholder='Email' disabled value={email || ''} />
+                <input type="number" maxLength='11' minLength='10' placeholder='Celular' onChange={e => setCellPhone(e.target.value)} value={cellPhone || ''}/>
                 <label>
                     <span>Imagem de Perfil</span>
                     <input type="file" onChange={handleFile} />

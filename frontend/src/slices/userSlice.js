@@ -122,7 +122,6 @@ export const userSlice = createSlice({
             state.success = true;
             state.error = null;
             state.users = action.payload;
-            console.log(state.users);
         })
     }
 })

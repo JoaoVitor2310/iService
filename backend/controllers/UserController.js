@@ -16,8 +16,7 @@ const generateToken = (id) => {
 
 // Register and sign in
 const register = async(req, res) => {
-    const {name, occupation, email, password} = req.body;
-    console.log(req.body);
+    const {name, occupation, cellPhone, email, password} = req.body;
 
     //Check if user exists
     const user = await User.findOne({email});
@@ -32,6 +31,7 @@ const register = async(req, res) => {
     const newUser = await User.create({
         name,
         occupation,
+        cellPhone,
         email,
         password: passwordHash
     })
@@ -76,7 +76,7 @@ const getCurrentUser = async(req, res) => {
 }
 
 const update  = async(req, res) => {
-    const { name, password, bio } = req.body;
+    const { name, cellPhone, password, bio } = req.body;
     let profileImage = null;
     const reqUser = req.user;
 
@@ -111,6 +111,10 @@ const update  = async(req, res) => {
 
     if (bio) {
         user.bio = bio;
+    }
+
+    if (cellPhone) {
+        user.cellPhone = cellPhone;
     }
 
     await user.save();
@@ -162,7 +166,6 @@ const followUser = async (req, res) => {
         res.status(200).json({user, userFollowing, message: ['Seguindo!']});
         
     } catch (error) {  
-        console.log(error);
         res.status(404).json({ errors: ['Usuário não encontrado.'] });
     }
     return;

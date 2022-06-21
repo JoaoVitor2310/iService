@@ -27,7 +27,6 @@ const Search = () => {
     <div id='search'>
       <LoadingPage loading={loading} />
       <h2>Você está buscando por: {search}</h2>
-      {/* {console.log(users)} */}
       {users && users.map(user => (
           <SearchUser user={user} key={user._id}/>
       ))}

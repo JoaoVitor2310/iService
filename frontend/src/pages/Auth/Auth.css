@@ -27,6 +27,12 @@
     font-weight: bold;
     color: #0094F6;
 }
+/* Removes input arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 @media screen and (max-width: 390px){
     div#login, div#register{

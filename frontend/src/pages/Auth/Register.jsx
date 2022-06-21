@@ -16,6 +16,7 @@ import {register, reset} from '../../slices/authSlice';
 const Register = () => {
   const [name, setName] = useState('');
   const [occupation, setOccupation] = useState('');
+  const [cellPhone, setCellPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -26,7 +27,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = {
-      name, email, password, confirmPassword, occupation
+      name, email, cellPhone, password, confirmPassword, occupation
     }
     // console.log(user);
     dispatch(register(user))
@@ -54,6 +55,7 @@ const Register = () => {
           <option value="trainer">Adestrador</option>
         </select>
         {/* OBS: Select improvisado, iremos melhorar depois via api */}
+        <input type="number" maxLength='11' minLength='10' placeholder='Celular' onChange={e => setCellPhone(e.target.value)} value={cellPhone || ''}/>
         <input type="email" placeholder='Email' onChange={e => setEmail(e.target.value)} value={email || ''}/>
         <input type="password" placeholder='Senha' onChange={e => setPassword(e.target.value)} value={password || ''}/>
         <input type="password" placeholder='Confirme a senha' onChange={e => setConfirmPassword(e.target.value)} value={confirmPassword || ''}/>
