@@ -1,3 +1,4 @@
+//Objective: handle with the like button
 //Hooks
 import { useDispatch } from "react-redux";
 import { useResetComponentMessage } from "./useResetComponentMessage";

@@ -1,3 +1,4 @@
+//Objective: reset the message
 import { resetMessage } from '../slices/photoSlice'
 
 export const useResetComponentMessage = (dispatch) => {

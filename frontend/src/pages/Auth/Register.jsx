@@ -29,7 +29,6 @@ const Register = () => {
     const user = {
       name, email, cellPhone, password, confirmPassword, occupation
     }
-    // console.log(user);
     dispatch(register(user))
   }
 

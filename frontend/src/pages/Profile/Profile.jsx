@@ -42,17 +42,17 @@ const Profile = () => {
   }, [dispatch, id]);
 
   const handleFile = (e) => {
-    const image = e.target.files[0]; // Pega a imagem enviada no input
+    const image = e.target.files[0]; // Catches the image from input
     setImage(image);
   }
 
-  const resetComponentMessage = () => { // Reseta o componente de mensagem
+  const resetComponentMessage = () => {
     setTimeout(() => {
       dispatch(resetMessage())
     }, 4000)
   }
 
-  const submitHandle = async (e) => { // Vai criar um objeto com os dados de edição, fazer o dispatch pra enviar e resetar o estado e a mensagem.
+  const submitHandle = async (e) => { //Creates an object with the edit data, dispatches and resets the message
     e.preventDefault();
     const photoData = {
       title,
@@ -67,7 +67,7 @@ const Profile = () => {
     resetComponentMessage();
   }
 
-  const handleDelete = (id) => { // Deleta a foto, reseta a mensasgem e retira o formulário(se tiver).
+  const handleDelete = (id) => { //Deletes the photo, resets the message and hides the form
     dispatch(deletePhoto(id));
     resetComponentMessage();
     if (!editPhotoForm.current.classList.contains('hide')) {
@@ -75,12 +75,12 @@ const Profile = () => {
     }
   }
 
-  const hideOrShowForms = () => { // Mostra ou esconde o form usando o toggle(tira ou coloca a classe) no hide, classe no index css
+  const hideOrShowForms = () => { //Hide or show the form using toggle in hide class(display none in CSS)
     newPhotoForm.current.classList.toggle('hide');
     editPhotoForm.current.classList.toggle('hide');
   }
 
-  const handleUpdate = (e) => { // Cria um objeto com os dados de edição, faz um dispatch pro backend e retira a mensagem de resposta
+  const handleUpdate = (e) => { //Creates an object with the edit data, dispatches to backend end cleans the message
     e.preventDefault();
     const photoData = {
       title: editTitle,
@@ -91,7 +91,7 @@ const Profile = () => {
   }
 
 
-  const handleEdit = (photo) => { // Vai mostrar o formulário de edição e mostrar os dados nos inputs
+  const handleEdit = (photo) => { //Shows the edit form and the data on the inputs
     if (editPhotoForm.current.classList.contains('hide')) {
       hideOrShowForms();
     }
@@ -100,12 +100,12 @@ const Profile = () => {
     setEditImage(photo.url);
   }
 
-  const handleCancelEdit = (e) => { // Cancela a edição tirando a classe hide
+  const handleCancelEdit = (e) => { //Cancels the edit hiding the form with the 'hide'
     e.preventDefault();
     hideOrShowForms();
   }
 
-  const handleFollow = () => { // Segue o usuário
+  const handleFollow = () => { //Follows the user
     dispatch(followUser(id));
   }
 
@@ -162,8 +162,6 @@ const Profile = () => {
               <button className='cancel-btn' onClick={handleCancelEdit}>Cancelar edição</button>
             </form>
           </div>
-          {errorPhoto && (<Message msg={errorPhoto} type='error'></Message>)}
-          {messagePhoto && (<Message msg={messagePhoto} type='success'></Message>)}
         </>
       )}
       <div className="user-photos">

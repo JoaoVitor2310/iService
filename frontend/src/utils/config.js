@@ -1,5 +1,6 @@
 export const api = 'http://localhost:5000/api';
 
+//RequestConfig will configure the fetch method, body and headers
 export const requestConfig = (method, data, token = null, image = null) => {
     let config;
     if(image){

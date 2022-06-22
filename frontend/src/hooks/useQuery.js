@@ -1,3 +1,4 @@
+//Objective: catch the query from URL
 import { useLocation } from "react-router-dom"
 import { useMemo } from "react"
 

@@ -33,7 +33,7 @@ const Navbar = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         if (query) {
-            return navigate(`/search?q=${query}`) // Navega para a a URL com o queryParams que foi digitado
+            return navigate(`/search?q=${query}`) //Navigates to the URl with the query param
         }
     }
 

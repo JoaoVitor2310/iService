@@ -27,12 +27,12 @@ const EditProfile = () => {
     const dispatch = useDispatch();
     const { user, loading, error, message } = useSelector(state => state.user);
 
-    //Load user data
+    //Loads user data
     useEffect(() => {
         dispatch(profile());
     }, [dispatch]);
 
-    //Fill form with user data
+    //Fills form with user data
     useEffect(() => {
         if (user) {
             setName(user.name);

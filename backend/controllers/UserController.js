@@ -118,11 +118,15 @@ const update  = async(req, res) => {
     }
 
     if (addOccupation) {
-        user.occupation.push(addOccupation);
+        if(!user.occupation.includes(addOccupation)){
+            user.occupation.push(addOccupation);
+        }
     }
 
     if (removeOccupation) {
-        await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$pull: {occupation: removeOccupation}});
+        if(user.occupation.includes(removeOccupation)){
+            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$pull: {occupation: removeOccupation}});
+        }
     }
 
     await user.save();
@@ -165,13 +169,13 @@ const followUser = async (req, res) => {
             await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, {$pull: {followers: reqUser._id} }, { upsert: true });
             await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$pull: {following: id} }, { upsert: true });
 
-            res.status(200).json({user, userFollowing, message: ['Deixou de seguir.']});
+            res.status(200).json({user, userFollowing});
             return;
         }
 
         await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, {$push: {followers: reqUser._id} }, { upsert: true });
         await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$push: {following: id} }, { upsert: true });
-        res.status(200).json({user, userFollowing, message: ['Seguindo!']});
+        res.status(200).json({user, userFollowing});
         
     } catch (error) {  
         res.status(404).json({ errors: ['Usuário não encontrado.'] });

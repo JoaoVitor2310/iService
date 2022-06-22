@@ -2,7 +2,7 @@ import { api, requestConfig } from '../utils/config';
 
 //Register user
 const register = async (data) => {
-    const config = requestConfig('POST', data); // Configures de fetch function and sends the data
+    const config = requestConfig('POST', data); // Configures the fetch function and sends the data
     try {
         const res = await fetch(api + '/users/register', config).then(res => res.json()).catch(err => err); //Makes the request to the endpoint with the above configuration
         if (res) {
@@ -15,10 +15,12 @@ const register = async (data) => {
 
 }
 
+//Logout user
 const logout = async() => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('user'); //Just removes him from localStorage
 }
 
+//Login user
 const login = async (data) => {
     const config = requestConfig('POST', data);
     

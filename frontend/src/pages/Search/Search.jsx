@@ -16,7 +16,7 @@ const Search = () => {
   const query = useQuery();
   const dispatch = useDispatch();
 
-  const search = query.get('q'); // Pega a variável 'q' que será passada no query da url
+  const search = query.get('q'); //Receives the 'q' from URL
   const { users, loading } = useSelector(state => state.user);
 
   useEffect(() => {
