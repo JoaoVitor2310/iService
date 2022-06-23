@@ -6,7 +6,6 @@ const {insertOccupation, getAllOccupations} = require('../controllers/Occupation
 
 //Middlewares
 const authGuard = require('../middlewares/authGuard');
-const validate = require('../middlewares/handleValidation');
 
 //Routes
 router.post('/', authGuard, insertOccupation);

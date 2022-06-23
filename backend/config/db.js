@@ -9,7 +9,7 @@ const conn = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
-        console.log('Contectado ao banco de dados!');
+        console.log('Conectado ao banco de dados!');
         return dbConn;
     } catch (error) {
         console.log(error);

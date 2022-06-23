@@ -10,12 +10,9 @@ import OccupationSelect from '../../components/OccupationSelect';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { useQuery } from '../../hooks/useQuery';
 
 //Redux
 import { getPhotos } from '../../slices/photoSlice';
-import { searchUsers } from '../../slices/userSlice';
-
 
 const ForYou = () => {
     const dispatch = useDispatch();
