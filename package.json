@@ -1,0 +1,7 @@
+  {
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "server": "node ./backend/app.js",
+      "start": "./frontend/react-scripts start"
+    }
+  }
