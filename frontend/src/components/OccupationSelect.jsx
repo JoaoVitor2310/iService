@@ -33,6 +33,15 @@ const OccupationSelect = ({ user, type }) => {
                     ))}
                 </>
             )
+        case 'all':
+            return (
+                <>
+                    <option value="DEFAULT" disabled>Filtrar função:</option>
+                    {occupations && occupations.map(occup => (
+                        <option value={occup.name} key={occup._id}>{occup.name}</option>
+                    ))}
+                </>
+            )
         default:
             break;
     }

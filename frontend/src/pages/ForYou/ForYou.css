@@ -1,0 +1,9 @@
+.formYou{
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.youBtn{
+    margin-left: 15px;
+    height: 100%;
+}

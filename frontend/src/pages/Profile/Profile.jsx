@@ -68,10 +68,13 @@ const Profile = () => {
   }
 
   const handleDelete = (id) => { //Deletes the photo, resets the message and hides the form
-    dispatch(deletePhoto(id));
-    resetComponentMessage();
-    if (!editPhotoForm.current.classList.contains('hide')) {
-      hideOrShowForms();
+    const decision = window.confirm("Você deseja deletar essa foto?");
+    if(decision){
+      dispatch(deletePhoto(id));
+      resetComponentMessage();
+      if (!editPhotoForm.current.classList.contains('hide')) {
+        hideOrShowForms();
+      }
     }
   }
 

@@ -1,7 +1,8 @@
 import {api, requestConfig} from '../utils/config';
 
+//Publishes user photo
 const publishPhoto = async(data, token) => {
-    const config = requestConfig('POST', data, token, true);
+    const config = requestConfig('POST', data, token, true); //True because will post a photo
 
     try {
         const res = await fetch(api + '/photos', config).then(res => res.json()).catch(err => err);
@@ -11,6 +12,7 @@ const publishPhoto = async(data, token) => {
     }
 }
 
+//Get all photos of an user
 const getUserPhotos = async(id, token) => {
     const config = requestConfig('GET', null, token);
     try {
@@ -21,6 +23,7 @@ const getUserPhotos = async(id, token) => {
     }
 };
 
+//Deletes a photo
 const deletePhoto = async(id, token) => {
     const config = requestConfig('DELETE', null, token);
 
@@ -32,6 +35,7 @@ const deletePhoto = async(id, token) => {
     }
 }
 
+//Updates a photo(post)
 const updatePhoto = async(data, id, token) => {
     const config = requestConfig('PUT', data, token);
     
@@ -43,6 +47,7 @@ const updatePhoto = async(data, id, token) => {
     }
 }
 
+//Gets a specific photo(post)
 const getPhoto = async(id, token) => {
     const config = requestConfig('GET', null, token);
     
@@ -55,6 +60,7 @@ const getPhoto = async(id, token) => {
     }
 }
 
+//Gets all photos(post)
 const getPhotos = async(token) => {
     const config = requestConfig('GET', null, token);
     
@@ -66,7 +72,7 @@ const getPhotos = async(token) => {
     }
 }
 
-
+//Likes photo(post)
 const like = async(id, token) => {
     const config = requestConfig('PUT', null, token);
 
@@ -78,6 +84,7 @@ const like = async(id, token) => {
     }
 }
 
+//Comments photo(post)
 const comment = async(data, id, token) => {
     const config = requestConfig('PUT', data, token);
 

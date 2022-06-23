@@ -58,6 +58,16 @@ export const searchUsers = createAsyncThunk(
     }
 )
 
+export const searchUsersByOccupation = createAsyncThunk(
+    'user/searchByOccupation',
+    async(query, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user.token;
+        const data = await userService.searchUsersByOccupation(query, token);
+        return data;
+    }
+)
+
+//userSlice, action.payload will be the response from backend
 export const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -118,6 +128,14 @@ export const userSlice = createSlice({
             state.loading = true;
             state.error = false;
         }).addCase(searchUsers.fulfilled, (state, action) => { // Caso o fetch do searchUsers estiver sido completado, atualiza o usuário
+            state.loading = false;
+            state.success = true;
+            state.error = null;
+            state.users = action.payload;
+        }).addCase(searchUsersByOccupation.pending, (state) => { // Caso o fetch do searchUsersByOccupation estiver pendente
+            state.loading = true;
+            state.error = false;
+        }).addCase(searchUsersByOccupation.fulfilled, (state, action) => { // Caso o fetch do searchUsersByOccupation estiver sido completado, atualiza o usuário
             state.loading = false;
             state.success = true;
             state.error = null;

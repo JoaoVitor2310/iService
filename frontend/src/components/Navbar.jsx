@@ -24,10 +24,12 @@ const Navbar = () => {
     const [query, setQuery] = useState('');
 
     const handleLogout = () => {
-        dispatch(logout());
-        dispatch(reset());
-
-        navigate('/login');
+        const decision = window.confirm("Você deseja deslogar?");
+        if(decision){
+            dispatch(logout());
+            dispatch(reset());
+            navigate('/login');
+        }
     }
 
     const handleSearch = (e) => {

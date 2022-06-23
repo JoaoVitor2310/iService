@@ -102,6 +102,7 @@ export const getPhotos = createAsyncThunk(
     }
 )
 
+//photoSlice, action.payload will be the response from backend
 export const photoSlice = createSlice({
     name: 'photo',
     initialState,
@@ -111,50 +112,50 @@ export const photoSlice = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(publishPhoto.pending, (state) => { // Caso o fetch do publishPhoto estiver pendente
+        builder.addCase(publishPhoto.pending, (state) => { // If the publishPhoto is pending
             state.loading = true;
             state.error = false;
-        }).addCase(publishPhoto.fulfilled, (state, action) => { // Caso o fetch do publishPhoto estiver sido completado, atualiza o usuário
+        }).addCase(publishPhoto.fulfilled, (state, action) => { // If the publishPhoto is fulfilled, updates user
             state.loading = false;
             state.success = true;
             state.error = null;
-            state.photo = action.payload; // A photo virá da action
-            state.photos.unshift(state.photo); // Insete o state.photo no array de photos, tipo o push, mas ao invés de ser no final, será no início.
+            state.photo = action.payload; // Photo will come from action.payload
+            state.photos.unshift(state.photo); // Inserts payload on state.photo array, like the push, but instead of being at the end, it will be at the beginning. 
             state.message = 'Foto publicada com sucesso!';
-        }).addCase(publishPhoto.rejected, (state, action) => { // Caso o fetch do publishPhoto tiver sido rejeitado.
+        }).addCase(publishPhoto.rejected, (state, action) => { //If the publishPhoto is rejected
             state.loading = false;
-            state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
-            state.photo = {}; //Msm coisa de null, ta assim pra n dar erro
-        }).addCase(getUserPhotos.pending, (state) => { // Caso o fetch do getUserPhotos estiver pendente
+            state.error = action.payload; //Error message will come from payload
+            state.photo = {}; //Same as null
+        }).addCase(getUserPhotos.pending, (state) => { // If the getUserPhotos is pending
             state.loading = true;
             state.error = false;
-        }).addCase(getUserPhotos.fulfilled, (state, action) => { // Caso o fetch do getUserPhotos estiver sido completado, atualiza o usuário
+        }).addCase(getUserPhotos.fulfilled, (state, action) => { // If the getUserPhotos is fulfilled, updates user
             state.loading = false;
             state.success = true;
             state.error = null;
             state.photos = action.payload;
-        }).addCase(deletePhoto.pending, (state) => { // Caso o fetch do deletePhoto estiver pendente
+        }).addCase(deletePhoto.pending, (state) => { 
             state.loading = true;
             state.error = false;
-        }).addCase(deletePhoto.fulfilled, (state, action) => { // Caso o fetch do deletePhoto estiver sido completado, atualiza o usuário
+        }).addCase(deletePhoto.fulfilled, (state, action) => { 
             state.loading = false;
             state.success = true;
             state.error = null;
-            state.photos = state.photos.filter(photo => { return photo._id !== action.payload.id }) // Filtra a foto que tem o id igual ao do payload(foto que quer deletar)
+            state.photos = state.photos.filter(photo => { return photo._id !== action.payload.id }) // Filters the photo with same id as payload
             state.message = action.payload.message;
-        }).addCase(deletePhoto.rejected, (state, action) => { // Caso o fetch do deletePhoto tiver sido rejeitado.
+        }).addCase(deletePhoto.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
-            state.photo = {}; //Msm coisa de null, ta assim pra n dar erro
-        }).addCase(updatePhoto.pending, (state) => { // Caso o fetch do updatePhoto estiver pendente
+            state.error = action.payload; //Error message will come from payload to be shown to the user
+            state.photo = {}; //Same as null
+        }).addCase(updatePhoto.pending, (state) => {
             state.loading = true;
             state.error = false;
-        }).addCase(updatePhoto.fulfilled, (state, action) => { // Caso o fetch do updatePhoto estiver sido completado, atualiza o usuário
+        }).addCase(updatePhoto.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
             state.error = null;
 
-            state.photos.map(photo => { // Atualiza a foto no frontend, pra não ter que fazer uma nova requisição  
+            state.photos.map(photo => { // Updates the photo on the state
                 if (photo._id === action.payload.photo._id) {
                     return photo.title = action.payload.photo.title;
                 }
@@ -162,28 +163,28 @@ export const photoSlice = createSlice({
             });
 
             state.message = action.payload.message;
-        }).addCase(updatePhoto.rejected, (state, action) => { // Caso o fetch do updatePhoto tiver sido rejeitado.
+        }).addCase(updatePhoto.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
-            state.photo = {}; //Msm coisa de null, ta assim pra n dar erro
-        }).addCase(getPhoto.pending, (state) => { // Caso o fetch do getPhoto estiver pendente
+            state.error = action.payload; //Error message will come from payload to be shown to the user
+            state.photo = {}; //Same as null
+        }).addCase(getPhoto.pending, (state) => {
             state.loading = true;
             state.error = false;
-        }).addCase(getPhoto.fulfilled, (state, action) => { // Caso o fetch do getPhoto estiver sido completado, atualiza o usuário
+        }).addCase(getPhoto.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
             state.error = null;
             state.photo = action.payload;
-        }).addCase(like.fulfilled, (state, action) => { // Caso o fetch do like estiver sido completado, atualiza o usuário
+        }).addCase(like.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
             state.error = null;
 
             if (state.photo.likes) {
-                state.photo.likes.push(action.payload.userId);
+                state.photo.likes.push(action.payload.userId);//Push userId on photo.likes at the photo page
             }
 
-            state.photos.map(photo => { // Atualiza a foto no frontend, pra não ter que fazer uma nova requisição  
+            state.photos.map(photo => { //Push userId on photo.likes at the home page
                 if (photo._id === action.payload.photoId) {
                     return photo.likes.push(action.payload.userId);
                 }
@@ -191,26 +192,26 @@ export const photoSlice = createSlice({
             });
 
             state.message = action.payload.message;
-        }).addCase(like.rejected, (state, action) => { // Caso o fetch do like tiver sido rejeitado.
+        }).addCase(like.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
-        }).addCase(comment.pending, (state) => { // Caso o fetch do comment estiver pendente
+            state.error = action.payload;
+        }).addCase(comment.pending, (state) => {
             state.loading = true;
             state.error = false;
         })
-        .addCase(comment.fulfilled, (state, action) => { // Caso o fetch do comment estiver sido completado, atualiza o usuário
+        .addCase(comment.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
             state.error = null;
             state.photo.comments.push(action.payload.comment);
             state.message = action.payload.message;
-        }).addCase(comment.rejected, (state, action) => { // Caso o fetch do comment tiver sido rejeitado.
+        }).addCase(comment.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload; // A mensagem de erro virá no payload e poderá ser exibida pro usuário
-        }).addCase(getPhotos.pending, (state) => { // Caso o fetch do getPhotos estiver pendente
+            state.error = action.payload;
+        }).addCase(getPhotos.pending, (state) => {
             state.loading = true;
             state.error = false;
-        }).addCase(getPhotos.fulfilled, (state, action) => { // Caso o fetch do getPhotos estiver sido completado, atualiza o usuário
+        }).addCase(getPhotos.fulfilled, (state, action) => {
             state.loading = false;
             state.success = true;
             state.error = null;

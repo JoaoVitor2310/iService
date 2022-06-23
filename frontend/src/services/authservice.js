@@ -6,7 +6,7 @@ const register = async (data) => {
     try {
         const res = await fetch(api + '/users/register', config).then(res => res.json()).catch(err => err); //Makes the request to the endpoint with the above configuration
         if (res) {
-            localStorage.setItem('user', JSON.stringify(res)); // Receives the user(id and token), stringifies and storages 
+            localStorage.setItem('user', JSON.stringify(res)); //Receives the user(id and token), stringifies and storages 
         }
         return res; // Returns the response
     } catch (error) {
@@ -25,9 +25,9 @@ const login = async (data) => {
     const config = requestConfig('POST', data);
     
     try {
-        const res = await fetch(api + '/users/login', config).then(res => res.json()).catch(err => err);
+        const res = await fetch(api + '/users/login', config).then(res => res.json()).catch(err => err);//Makes the request
 
-        if(res._id){
+        if(res._id){ //Receives the user(id and token) and storages
             localStorage.setItem('user', JSON.stringify(res));
         }
         return res;

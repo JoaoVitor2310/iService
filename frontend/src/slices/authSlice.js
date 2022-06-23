@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from '../services/authservice';
 
 const user = JSON.parse(localStorage.getItem('user')); // If the user is logged in, get it from localstorage
+
 const initialState = {
     user: user ? user : null,
     error: false,
@@ -36,6 +37,7 @@ export const login = createAsyncThunk( // Async function that will search an use
     }
 )
 
+//authSlice, action.payload will be the response from backend
 export const authSlice = createSlice({
     name: 'auth', // Name that will be called at the store.js with useSelector
     initialState,
@@ -47,7 +49,7 @@ export const authSlice = createSlice({
         },
     },
     extraReducers: builder => { // Part of the API executions
-        builder.addCase(register.pending, state => { // If the register API is pending
+        builder.addCase(register.pending, (state) => { // If the register API is pending
             state.loading = true;
             state.error = false;
         })
@@ -62,7 +64,7 @@ export const authSlice = createSlice({
             state.error = action.payload; //Error will come from action, and will show for user
             state.user = null;
         })
-        .addCase(logout.fulfilled, (state, action) => { // If the register API is fulfilled
+        .addCase(logout.fulfilled, (state) => { // If the register API is fulfilled
             state.loading = false;
             state.success = true;
             state.error = null;
@@ -72,15 +74,15 @@ export const authSlice = createSlice({
             state.loading = true;
             state.error = false;
         })
-        .addCase(login.fulfilled, (state, action) => {
+        .addCase(login.fulfilled, (state, action) => { // If the login API is fulfilled
             state.loading = false;
             state.success = true;
             state.error = null;
             state.user = action.payload;
         })
-        .addCase(login.rejected, (state, action) => {
+        .addCase(login.rejected, (state, action) => { // If the register API is rejected
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload; //Error will come from payload
             state.user = null;
         })
     }

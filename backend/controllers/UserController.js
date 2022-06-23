@@ -9,19 +9,19 @@ const s3 = new S3({ region: process.env.AWS_DEFAULT_REGION });
 
 //Generate user token
 const generateToken = (id) => {
-    return jwt.sign({id}, jwtSecret, {
+    return jwt.sign({ id }, jwtSecret, {
         expiresIn: '7d',
     })
 };
 
 // Register and sign in
-const register = async(req, res) => {
-    const {name, occupation, cellPhone, email, password} = req.body;
+const register = async (req, res) => {
+    const { name, occupation, cellPhone, email, password } = req.body;
 
     //Check if user exists
-    const user = await User.findOne({email});
-    if(user){
-        res.status(409).json({errors: ['Email já cadastrado, utilize outro.']});
+    const user = await User.findOne({ email });
+    if (user) {
+        res.status(409).json({ errors: ['Email já cadastrado, utilize outro.'] });
         return;
     }
     //Create password hash
@@ -48,17 +48,17 @@ const register = async(req, res) => {
 };
 
 //Sign user in
-const login = async(req, res) => {
-    const {email, password} = req.body;
-    
-    const user = await User.findOne({email});
-    if(!user){
-        res.status(404).json({errors: ['Usuário não encontrado.']});
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+        res.status(404).json({ errors: ['Usuário não encontrado.'] });
         return;
     }
 
-    if(!(await bcrypt.compare(password, user.password))){
-        res.status(401).json({errors: ['Senha incorreta.']});
+    if (!(await bcrypt.compare(password, user.password))) {
+        res.status(401).json({ errors: ['Senha incorreta.'] });
         return;
     }
 
@@ -69,20 +69,20 @@ const login = async(req, res) => {
     })
 };
 
-const getCurrentUser = async(req, res) => {
+const getCurrentUser = async (req, res) => {
     const user = req.user;
-    
+
     res.status(200).json(user);
 }
 
-const update  = async(req, res) => {
+const update = async (req, res) => {
     const { name, cellPhone, password, bio, addOccupation, removeOccupation } = req.body;
     let profileImage = null;
     const reqUser = req.user;
 
     if (req.file) {
         profileImage = req.file.location;
-        if(reqUser.profileImage){
+        if (reqUser.profileImage) {
             const previousKey = reqUser.profileImage.split('.com/')[1];
             await s3.deleteObject({ //Deletes the previous profile image on amazon s3
                 Bucket: 'iservice1',
@@ -118,14 +118,14 @@ const update  = async(req, res) => {
     }
 
     if (addOccupation) {
-        if(!user.occupation.includes(addOccupation)){
+        if (!user.occupation.includes(addOccupation)) {
             user.occupation.push(addOccupation);
         }
     }
 
     if (removeOccupation) {
-        if(user.occupation.includes(removeOccupation)){
-            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$pull: {occupation: removeOccupation}});
+        if (user.occupation.includes(removeOccupation)) {
+            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, { $pull: { occupation: removeOccupation } });
         }
     }
 
@@ -134,50 +134,57 @@ const update  = async(req, res) => {
 }
 
 const getUserById = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     try {
-        const user = await User.findById(mongoose.Types.ObjectId(id)).select('-password');        
-        if(!user){
-            res.status(404).json({errors: ['Usuário não encontrado.']});
+        const user = await User.findById(mongoose.Types.ObjectId(id)).select('-password');
+        if (!user) {
+            res.status(404).json({ errors: ['Usuário não encontrado.'] });
             return;
         }
         res.status(200).json(user);
     } catch (error) {
-        res.status(404).json({errors: ['Id inválido']});
+        res.status(404).json({ errors: ['Id inválido'] });
         return
     }
 
 }
 
-const searchUsers = async(req, res) => {
-    const {q} = req.query;
-    const users = await User.find({name: new RegExp(q, 'i')}).exec();
-    
+const getUsersByOccupation = async (req, res) => {
+    const { q } = req.query;
+    const users = await User.find({ occupation: new RegExp(q, 'i') }).exec();
+    res.status(200).json(users);
+
+}
+
+const searchUsers = async (req, res) => {
+    const { q } = req.query;
+    const users = await User.find({ name: new RegExp(q, 'i') }).exec();
+
     res.status(200).json(users);
 }
 
 const followUser = async (req, res) => {
     const { id } = req.params; // User to follow
     const reqUser = req.user; // Actual user
-    
+
     try {
         const user = await User.findById(id)
         const userFollowing = await User.findById(reqUser._id);
 
-        if(user.followers.includes(reqUser._id)){
-            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, {$pull: {followers: reqUser._id} }, { upsert: true });
-            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$pull: {following: id} }, { upsert: true });
+        if (user.followers.includes(reqUser._id)) {
+            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { $pull: { followers: reqUser._id } }, { upsert: true });
+            await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, { $pull: { following: id } }, { upsert: true });
 
-            res.status(200).json({user, userFollowing});
+            res.status(200).json({ user, userFollowing });
             return;
         }
 
-        await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, {$push: {followers: reqUser._id} }, { upsert: true });
-        await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, {$push: {following: id} }, { upsert: true });
-        res.status(200).json({user, userFollowing});
-        
-    } catch (error) {  
+        await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { $push: { followers: reqUser._id } }, { upsert: true });
+        await User.findOneAndUpdate({ _id: mongoose.Types.ObjectId(reqUser._id) }, { $push: { following: id } }, { upsert: true });
+        res.status(200).json({ user, userFollowing });
+
+    } catch (error) {
         res.status(404).json({ errors: ['Usuário não encontrado.'] });
     }
     return;
@@ -189,6 +196,7 @@ module.exports = {
     getCurrentUser,
     update,
     getUserById,
+    getUsersByOccupation,
     searchUsers,
     followUser,
 }
