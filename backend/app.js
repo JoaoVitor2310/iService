@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const {resolve} = require('path');
 const cors = require('cors');
 require('dotenv').config()
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended: false}));
 
 app.use(cors());
 
+app.use('/', express.static(resolve(__dirname, '../frontend/build')));
 
 app.use('/', router);
 
