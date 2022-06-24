@@ -1,1 +1,1 @@
-web: npm server && npm start
+web: "npm server" && "npm start"
