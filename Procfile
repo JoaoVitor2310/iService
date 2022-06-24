@@ -1,2 +1,2 @@
-web: npm run server;
+web: npm run server && npm start;
 # web: npm start;
