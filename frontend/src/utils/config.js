@@ -1,4 +1,4 @@
-export const api = process.env.REACT_APP_API_URL;
+export const api = 'https://iservice.herokuapp.com/api';
 // 'http://localhost:5000/api';
 
 //RequestConfig will configure the fetch method, body and headers
