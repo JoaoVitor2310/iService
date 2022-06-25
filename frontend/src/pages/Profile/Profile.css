@@ -22,16 +22,19 @@
 .photos-container{
     display: flex;
     flex-wrap: wrap;
+    padding: 0;
 }
 .photo{
-    width: 31%;
+    width: 29%;
     margin: 0.3%;
     text-align: center;
+    flex-direction: column;
 }
 .photo img{
     width: 100%;
 }
 .actions{
+    width: 90%;
     display: flex;
     justify-content: space-around;
     padding: 10px;
