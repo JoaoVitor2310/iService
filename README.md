@@ -5,7 +5,7 @@
 ## Introdução: Bem-vindo ao projeto iService, a minha ideia com ele era exercitar os conhecimentos aprendidos em React e Node, então eu fiz um clone do Instagram e evolui com algumas funcionalidades, o objetivo é fazer com que usuários encontrem bons profissionais.  
 
 ### Descrição: Rede social com base em serviços prestados, com o objetivo de fazer as pessoas conhecerem profissionais de serviços, podendo:  
--Criar usuários com email, senha protegida com hash, função/proffisão e telefone.  
+-Criar usuários com email, senha protegida com hash, função/profissão e telefone.  
 -Ver, postar, curtir e comentar fotos, pesquisar usuários por nome ou função, descobrir e seguir pessoas que ainda não segue. 
 
 ### Objetivo: Exercitar os conhecimentos de React e Node:
