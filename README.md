@@ -1,5 +1,7 @@
 # iService
 
+![2](https://user-images.githubusercontent.com/80935917/175788787-985098c2-8d84-4eb4-adbf-6cc7b62be5ed.gif)
+
 ## Introdução: Bem-vindo ao projeto iService, a minha ideia com ele era exercitar os conhecimentos aprendidos em React e Node, então eu fiz um clone do Instagram e evolui com algumas funcionalidades, o objetivo é fazer com que usuários encontrem bons profissionais.  
 
 ### Descrição: Rede social com base em serviços prestados, com o objetivo de fazer as pessoas conhecerem profissionais de serviços, podendo:  
