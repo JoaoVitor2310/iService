@@ -9,6 +9,6 @@ const authGuard = require('../middlewares/authGuard');
 
 //Routes
 router.post('/', authGuard, insertOccupation);
-router.get('/', authGuard, getAllOccupations);
+router.get('/', getAllOccupations);
 
 module.exports = router;

@@ -13,8 +13,7 @@ const initialState = {
 export const getAllOccupations = createAsyncThunk(
     'occupations/getall',
     async(_, thunkAPI) => { //Underline because the first parameter is unecessary
-        const token = thunkAPI.getState().auth.user.token; //Gets the token from auth state
-        const data = await occupationService.getAllOccupations(token); //Calls the service
+        const data = await occupationService.getAllOccupations(); //Calls the service
         return data;
     }
 )
