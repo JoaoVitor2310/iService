@@ -41,34 +41,34 @@ const Navbar = () => {
 
     return (
         <nav id='nav'>
-            <Link to='/'>iService</Link>
+            <Link to='/' >iService</Link>
             <form id='search-form' onSubmit={handleSearch}>
                 <BsSearch />
-                <input type="text" placeholder='Pesquisar' onChange={e => setQuery(e.target.value)} />
+                <input type="text" placeholder='Pesquisar' className='search' onChange={e => setQuery(e.target.value)} />
             </form>
             <ul id='nav-links'>
                 {auth ? (
                     <>
                         <li className='house-icon'>
-                            <NavLink to='/'>
+                            <NavLink to='/' >
                                 <BsHouseDoorFill />
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to={`/foryou`}>
+                            <NavLink to={`/foryou`} >
                                 <BsSearch />
                             </NavLink>
                         </li>
                         {user && (
                             <li>
-                                <NavLink to={`/users/${user._id}`}>
+                                <NavLink to={`/users/${user._id}`} >
                                     <BsFillCameraFill />
                                 </NavLink>
                             </li>
 
                         )}
                         <li>
-                            <NavLink to='/profile'>
+                            <NavLink to='/profile' >
                                 <BsFillPersonFill />
                             </NavLink>
                         </li>
@@ -79,12 +79,12 @@ const Navbar = () => {
                 ) : (
                     <>
                         <li>
-                            <NavLink to='/login'>
+                            <NavLink to='/login' >
                                 Entrar
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to='/register'>
+                            <NavLink to='/register' >
                                 Cadastrar
                             </NavLink>
                         </li>

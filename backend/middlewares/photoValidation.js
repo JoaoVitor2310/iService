@@ -17,12 +17,6 @@ const photoInsertValidation = () => {
                 }
                 return true;
             }),
-    //     body('description')
-    //         .optional()
-    //         .isString()
-    //         .withMessage('O título é obrigatório.')
-    //         .isLength({ min: 3 })
-    //         .withMessage('O título precisa ter no mínimo 3 caracteres.'),
     ]
 }
 
@@ -34,12 +28,6 @@ const photoUpdateValidation = () => {
             .withMessage('O título é obrigatório.')
             .isLength({ min: 3 })
             .withMessage('O título precisa ter no mínimo 3 caracteres.'),
-        // body('description')
-        //     .optional()
-        //     .isString()
-        //     .withMessage('O título é obrigatório.')
-        //     .isLength({ min: 3 })
-        //     .withMessage('O título precisa ter no mínimo 3 caracteres.'),
     ]
 }
 

@@ -122,6 +122,7 @@ const Profile = () => {
         <div className="profile-description">
           <h2>{user.name}</h2>
           <p>{user.bio}</p>
+          <p>Celular: {user.cellPhone}</p>
           <UserOccupation user={user}/>
           {user.followers && (
             <>

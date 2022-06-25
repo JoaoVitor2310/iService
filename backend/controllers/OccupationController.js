@@ -36,6 +36,8 @@ const getAllOccupations = async (req, res) => {
     res.status(200).json(occupations);
 }
 
+//I could do a deleteOccupations route, but I have access to the database;
+
 module.exports = {
     insertOccupation,
     getAllOccupations

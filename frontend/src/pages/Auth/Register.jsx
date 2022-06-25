@@ -5,6 +5,7 @@ import './Auth.css';
 import { Link } from 'react-router-dom';
 import Message from '../../components/Message';
 import LoadingInput from '../../components/LoadingInput';
+import OccupationSelect from '../../components/OccupationSelect';
 
 //Hooks
 import { useState, useEffect } from 'react';
@@ -42,25 +43,15 @@ const Register = () => {
       <p className='subtitle'>Faça o seu cadastro!</p>
       <form onSubmit={handleSubmit}>
         <input type="text" placeholder='Nome' onChange={e => setName(e.target.value)} value={name || ''}/>
-        {/* OBS: Select improvisado, iremos melhorar depois via api */}
         <select name="occupation" defaultValue={'DEFAULT'} onChange={e => setOccupation(e.target.value)}>
-          <option value="DEFAULT" disabled>Função principal:</option>
-          <option value="user" >Usuário</option>
-          <option value="bricklayer">Pedreiro</option>
-          <option value="electrician">Eletricista</option>
-          <option value="painter">Pintor</option>
-          <option value="poolCleaner">Piscineiro</option>
-          <option value="gardener">Jardineiro</option>
-          <option value="trainer">Adestrador</option>
+                    <OccupationSelect type='register' />
         </select>
-        {/* OBS: Select improvisado, iremos melhorar depois via api */}
         <input type="number" maxLength='11' minLength='10' placeholder='Celular' onChange={e => setCellPhone(e.target.value)} value={cellPhone || ''}/>
         <input type="email" placeholder='Email' onChange={e => setEmail(e.target.value)} value={email || ''}/>
         <input type="password" placeholder='Senha' onChange={e => setPassword(e.target.value)} value={password || ''}/>
         <input type="password" placeholder='Confirme a senha' onChange={e => setConfirmPassword(e.target.value)} value={confirmPassword || ''}/>
         <LoadingInput loading={loading} value='Cadastrar' />
         {error && <Message msg={error} type='error'/>}
-        {/* <input type="submit" value='Cadastrar' /> */}
       </form>
       <p>Já tem conta? <Link to='/login'>Clique aqui</Link></p>
     </div>

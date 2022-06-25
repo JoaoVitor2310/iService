@@ -5,12 +5,12 @@ const jwtSecret = process.env.JWT_SECRET;
 const authGuard = async(req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    //Check if header has a token
+    //Checks if header has a token
     if(!token){
         res.status(401).json({errors: ['Você precisa estar logado.']});
         return;
     }
-    //Check if token is valid
+    //Checks if token is valid
     try {
         const verified = jwt.verify(token, jwtSecret);
         req.user = await User.findById(verified.id).select('-password');

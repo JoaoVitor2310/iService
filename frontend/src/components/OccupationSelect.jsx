@@ -17,7 +17,7 @@ const OccupationSelect = ({ user, type }) => {
                     <option value="DEFAULT" disabled>Adicionar função:</option>
                     {occupations && occupations.map(occup => (
                         (!user.occupation.includes(occup.name) && (
-                        <option value={occup.name} key={occup._id}>{occup.name}</option>
+                            <option value={occup.name} key={occup._id}>{occup.name}</option>
                         ))
                     ))}
                 </>
@@ -28,7 +28,7 @@ const OccupationSelect = ({ user, type }) => {
                     <option value="DEFAULT" disabled>Remover função:</option>
                     {occupations && occupations.map(occup => (
                         (user.occupation.includes(occup.name) && (
-                        <option value={occup.name} key={occup._id}>{occup.name}</option>
+                            <option value={occup.name} key={occup._id}>{occup.name}</option>
                         ))
                     ))}
                 </>
@@ -37,6 +37,15 @@ const OccupationSelect = ({ user, type }) => {
             return (
                 <>
                     <option value="DEFAULT" disabled>Filtrar função:</option>
+                    {occupations && occupations.map(occup => (
+                        <option value={occup.name} key={occup._id}>{occup.name}</option>
+                    ))}
+                </>
+            )
+        case 'register':
+            return (
+                <>
+                    <option value="DEFAULT" disabled>Função principal:</option>
                     {occupations && occupations.map(occup => (
                         <option value={occup.name} key={occup._id}>{occup.name}</option>
                     ))}

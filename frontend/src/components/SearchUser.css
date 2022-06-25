@@ -3,6 +3,7 @@
     align-items: center;
     background-color: rgb(53, 53, 53);
     margin-bottom: 20px;
+    border-radius: 5px;
 }
 .photo{
     margin-left: 10px;
