@@ -12,3 +12,13 @@
     text-align: center;
     margin: .5em 0 2em 0;
 }
+@media screen and (max-width: 770px){
+    #search{
+        width: 80%;
+    }
+}
+@media screen and (max-width: 375px){
+    #search{
+        width: 90%;
+    }
+}
