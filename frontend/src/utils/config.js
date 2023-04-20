@@ -1,5 +1,5 @@
-export const api = 'https://iservice.herokuapp.com/api';
-// 'http://localhost:5000/api';
+export const api = 'http://localhost:5000/api';
+// 'https://iservice.herokuapp.com/api';
 
 //RequestConfig will configure the fetch method, body and headers
 export const requestConfig = (method, data, token = null, image = null) => {
