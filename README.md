@@ -21,4 +21,4 @@
 -Segundo projeto que utilizo o Node, me fascino cada vez mais em como ele funciona, essa validação de formulário com express validator é sensacional e abre muitas possibilidade de uso, e utilizar o amazon S3 foi um desafio também, não queria armazenar as fotos no meu pc e depender dele, mas pra usar o S3 tive que pesquisar bastante, porque a documentação não tava nada fácil de entender.
 -Adicionar novas funcionalidades seria interessante, principalmente padronizar o tamanho e dimensões das fotos, mas como o objetivo não é ter muito usuários, não dei prioridade para isso, assim como adicionar descrição das fotos, avaliação para os profissionais, adicionar paginação(já fiz no projeto página de anúncios) e muitas outras coisas.   
 
-## Link: iservice.herokuapp.com/ (hospedagem não está mais no ar por conta das mudanças na hreoku)
+## Link: iservice.herokuapp.com/ (infelizmente a hospedagem não está mais no ar por conta das mudanças na heroku)
