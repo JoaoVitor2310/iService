@@ -4,7 +4,7 @@
 
 ## Introdução: Bem-vindo ao projeto iService, a minha ideia com ele era exercitar os conhecimentos aprendidos em React e Node, então eu fiz um clone do Instagram e evolui com algumas funcionalidades, o objetivo é fazer com que usuários encontrem bons profissionais.  
 
-### Como executar o projeto: Primeiro faça o download dos arquivos. Depois de acessar o diretório do projeto, iremos até a pasta backend e rodar o comando npm run server. Para finalizar, basta acessar localhost:5000 pelo navegador e testar.  
+### Como executar o projeto: Primeiro faça o download dos arquivos. Depois de acessar o diretório do projeto(com o comando "cd" + destinho), iremos até a pasta "frontend" e rodar o comando "npm install"(instala as dependências do projeto), depois iremos até a pasta "backend" e também rodar "npm install", e pra finalizar, o comando "npm run server" para rodar o servidor. Pronto, basta acessar localhost:5000 pelo navegador e testar.  
 
 ### Descrição: Rede social com base em serviços prestados, com o objetivo de fazer as pessoas conhecerem profissionais de serviços, podendo:  
 -Criar usuários com email, senha protegida com hash, função/profissão e telefone.  
